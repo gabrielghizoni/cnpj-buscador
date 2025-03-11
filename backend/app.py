@@ -4,7 +4,8 @@ import pandas as pd
 from cnpj_pegador import buscar_dados_cnpj, formatar_valor
 import uuid
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend/static',
+            template_folder='../frontend')
 
 # Caminho onde os arquivos gerados serão salvos
 UPLOAD_FOLDER = 'static/files'
@@ -15,7 +16,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
-    return open('C:/Users/GABRIEL/Desktop/cnpj-pegador/index.html').read()
+    return open('C:/Users/GABRIEL/Desktop/cnpj-pegador/frontend/index.html').read()
 
 
 @app.route('/receber-cnpjs', methods=['POST'])
