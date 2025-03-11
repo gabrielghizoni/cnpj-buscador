@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNPJ List</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+
+<body>
+    <h2>Digite um CNPJ por linha:</h2>
+    <p>Exemplo do formato: 79.227.963/0001-82</p>
+    <!-- O textarea com name 'lista de cnpjs' -->
+    <textarea class="cnpjs" name="lista de cnpjs"></textarea><br>
+    <button onclick="enviarCNPJs()">Gerar arquivo excel</button>
+
+    <script>
+        function enviarCNPJs() {
+            var cnpjs = document.querySelector('.cnpjs').value;
+            if (!cnpjs) {
+                alert('Por favor, insira pelo menos um CNPJ!');
+                return;
+            }
+
+            var cnpjLista = cnpjs.split('\n');
+
+            fetch('/receber-cnpjs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cnpjs: cnpjLista })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('CNPJs enviados:', data);
+                    alert('Arquivo gerado: ' + data.arquivo);
+
+                    // Exibir logs na tela
+                    let logContainer = document.getElementById('logs');
+                    logContainer.innerHTML = '';  // Limpar logs anteriores
+                    data.logs.forEach(log => {
+                        let logElement = document.createElement('p');
+                        logElement.textContent = log;
+                        logContainer.appendChild(logElement);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar os dados');
+                });
+        }
+
+
+        function exibirMensagem(texto) {
+            document.getElementById("mensagemModal").innerHTML = texto;
+            document.getElementById("modalMensagem").style.display = "block";
+        }
+
+        function fecharModal() {
+            document.getElementById("modalMensagem").style.display = "none";
+        }
+    </script>
+    <div id="logs"></div>
+    <div id="modalMensagem" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="fecharModal()">&times;</span>
+            <p id="mensagemModal"></p>
+        </div>
+    </div>
+</body>
+
+</html>
