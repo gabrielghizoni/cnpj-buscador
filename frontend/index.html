@@ -15,47 +15,64 @@
     <textarea class="cnpjs" name="lista de cnpjs"></textarea><br>
     <button onclick="enviarCNPJs()">Gerar arquivo excel</button>
 
+    <div id="logs"></div>
+
+    <!-- Link de download que será exibido após o sucesso -->
+    <div id="download-container" style="display:none;">
+        <p>O arquivo foi gerado com sucesso! Você pode baixar o arquivo aqui:</p>
+        <a id="download-link" href="" download>
+            <button id="download-btn">Baixar o arquivo gerado</button>
+        </a>
+    </div>
+
+    <div id="modalMensagem" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="fecharModal()">&times;</span>
+            <p id="mensagemModal"></p>
+        </div>
+    </div>
+
     <script>
-    function enviarCNPJs() {
-        var cnpjs = document.querySelector('.cnpjs').value;
-        if (!cnpjs) {
-            alert('Por favor, insira pelo menos um CNPJ!');
-            return;
+        function enviarCNPJs() {
+            var cnpjs = document.querySelector('.cnpjs').value;
+            if (!cnpjs) {
+                alert('Por favor, insira pelo menos um CNPJ!');
+                return;
+            }
+
+            var cnpjLista = cnpjs.split('\n');
+
+            fetch('https://fpsi52x1f1.execute-api.us-east-2.amazonaws.com/prod/receber-cnpjs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cnpjs: cnpjLista })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('CNPJs enviados:', data);
+                    alert('Arquivo gerado: ' + data.arquivo);
+
+                    // Exibir logs na tela
+                    let logContainer = document.getElementById('logs');
+                    logContainer.innerHTML = '';  // Limpar logs anteriores
+                    data.logs.forEach(log => {
+                        let logElement = document.createElement('p');
+                        logElement.textContent = log;
+                        logContainer.appendChild(logElement);
+                    });
+
+                    // Exibir o link de download
+                    let downloadUrl = data.url;  // Usando a URL fornecida pela resposta do backend
+
+                    // Atualiza o link de download
+                    document.getElementById("download-link").href = downloadUrl;
+                    document.getElementById("download-container").style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao enviar os dados');
+                });
         }
-
-        var cnpjLista = cnpjs.split('\n');
-
-        fetch('/receber-cnpjs', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cnpjs: cnpjLista })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('CNPJs enviados:', data);
-            alert('Arquivo gerado: ' + data.arquivo);
-
-            // Exibir logs na tela
-            let logContainer = document.getElementById('logs');
-            logContainer.innerHTML = '';  // Limpar logs anteriores
-            data.logs.forEach(log => {
-                let logElement = document.createElement('p');
-                logElement.textContent = log;
-                logContainer.appendChild(logElement);
-            });
-
-            // Construir a URL do download usando o nome do arquivo retornado
-            let downloadUrl = `https://xyz123.execute-api.us-east-2.amazonaws.com/prod/download/${data.arquivo}`;
-
-            // Redirecionar para a URL de download
-            window.location.href = downloadUrl;
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao enviar os dados');
-        });
-        }
-
 
         function exibirMensagem(texto) {
             document.getElementById("mensagemModal").innerHTML = texto;
@@ -66,13 +83,6 @@
             document.getElementById("modalMensagem").style.display = "none";
         }
     </script>
-    <div id="logs"></div>
-    <div id="modalMensagem" class="modal">
-        <div class="modal-conteudo">
-            <span class="fechar" onclick="fecharModal()">&times;</span>
-            <p id="mensagemModal"></p>
-        </div>
-    </div>
 </body>
 
 </html>
