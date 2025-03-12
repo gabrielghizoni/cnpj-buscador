@@ -30,27 +30,30 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ cnpjs: cnpjLista })
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('CNPJs enviados:', data);
-                alert('Arquivo gerado: ' + data.arquivo);
+        .then(response => response.json())
+        .then(data => {
+            console.log('CNPJs enviados:', data);
+            alert('Arquivo gerado: ' + data.arquivo);
 
-                // Exibir logs na tela
-                let logContainer = document.getElementById('logs');
-                logContainer.innerHTML = '';  // Limpar logs anteriores
-                data.logs.forEach(log => {
-                    let logElement = document.createElement('p');
-                    logElement.textContent = log;
-                    logContainer.appendChild(logElement);
-                });
-
-                // Redirecionar para a rota de download
-                window.location.href = `/download/${data.arquivo}`;
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Erro ao enviar os dados');
+            // Exibir logs na tela
+            let logContainer = document.getElementById('logs');
+            logContainer.innerHTML = '';  // Limpar logs anteriores
+            data.logs.forEach(log => {
+                let logElement = document.createElement('p');
+                logElement.textContent = log;
+                logContainer.appendChild(logElement);
             });
+
+            // Construir a URL do download usando o nome do arquivo retornado
+            let downloadUrl = `https://xyz123.execute-api.us-east-2.amazonaws.com/prod/download/${data.arquivo}`;
+
+            // Redirecionar para a URL de download
+            window.location.href = downloadUrl;
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao enviar os dados');
+        });
         }
 
 

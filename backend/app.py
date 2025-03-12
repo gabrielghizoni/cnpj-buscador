@@ -119,7 +119,14 @@ def receber_cnpjs():
 
 @app.route('/download/<filename>')
 def download_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    # Verifica se o arquivo existe no diretório de upload
+    caminho_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    # Verifica se o arquivo existe antes de tentar enviar
+    if os.path.exists(caminho_arquivo):
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    else:
+        return jsonify({'message': 'Arquivo não encontrado'}), 404
 
 
 # Handler para AWS Lambda
