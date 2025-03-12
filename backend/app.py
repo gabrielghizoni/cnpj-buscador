@@ -1,22 +1,39 @@
 from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 import os
 import pandas as pd
 from cnpj_pegador import buscar_dados_cnpj, formatar_valor
 import uuid
+from mangum import Mangum
+import logging
 
-app = Flask(__name__, static_folder='../frontend/static',
-            template_folder='../frontend')
+# Inicializa o CORS
+app = Flask(__name__)
+CORS(app)  # Permite todas as origens
 
-# Caminho onde os arquivos gerados serão salvos
-UPLOAD_FOLDER = 'static/files'
+# Configurar logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# =================== MUDANÇAS NECESSÁRIAS ===================
+# 1. Remover referências ao frontend do Flask
+app = Flask(__name__)  # Removidos static_folder e template_folder
+
+# 2. Usar /tmp (caminho válido no Lambda)
+UPLOAD_FOLDER = '/tmp/files'  # Pasta temporária específica para os arquivos
+# =============================================================
+
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# =================== MUDANÇA OBRIGATÓRIA ====================
+# 3. Remover caminho absoluto do Windows
+
 
 @app.route('/')
 def index():
-    return open('C:/Users/GABRIEL/Desktop/cnpj-pegador/frontend/index.html').read()
+    return "API em execução! Acesse o frontend no Amplify"  # Frontend separado
 
 
 @app.route('/receber-cnpjs', methods=['POST'])
@@ -24,19 +41,20 @@ def receber_cnpjs():
     data = request.get_json()
     cnpjs_bruto = data.get('cnpjs', [])
     print(cnpjs_bruto)
-    cnpjs = []
-    for cnpj in cnpjs_bruto:
-        cnpj = str(cnpj).replace('.', '').replace('/', '').replace('-', '')
-        cnpjs.append(cnpj)
+
+    cnpjs = [
+        str(cnpj).replace('.', '').replace('/', '').replace('-', '')
+        for cnpj in cnpjs_bruto
+    ]
     print(cnpjs)
 
     todos_dados = []
-    logs = []  # Lista para armazenar as mensagens de log
+    logs = []
 
     for cnpj in cnpjs:
         log_msg = f"Buscando dados para o CNPJ: {cnpj}"
-        print(log_msg)  # Continua exibindo no console
-        logs.append(log_msg)  # Adiciona a mensagem à lista
+        print(log_msg)
+        logs.append(log_msg)
 
         dados = buscar_dados_cnpj(cnpj)
         if dados:
@@ -55,6 +73,7 @@ def receber_cnpjs():
         cnpj_origem = dado.get('cnpj_raiz', '')
         razao_origem = dado.get('razao_social', '')
         socios = dado.get('socios', [])
+
         if isinstance(socios, list):
             for socio in socios:
                 socio_formatado = {
@@ -89,21 +108,19 @@ def receber_cnpjs():
         log_msg = "Erro ao salvar o arquivo."
 
     print(log_msg)
-    logs.append(log_msg)  # Adiciona ao log
+    logs.append(log_msg)
 
     return jsonify({
         'message': 'Lista de CNPJs processada e arquivo gerado!',
         'arquivo': nome_arquivo,
-        'logs': logs  # Envia os logs para o frontend
+        'logs': logs
     })
 
 
-# Rota para fazer o download do arquivo gerado
 @app.route('/download/<filename>')
 def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-if __name__ == '__main__':
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=8080)
+# Handler para AWS Lambda
+handler = Mangum(app)  # Esta linha é importante para integração com Lambda
