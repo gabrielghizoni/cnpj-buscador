@@ -9,22 +9,10 @@ import boto3
 import base64
 from cnpj_pegador import buscar_dados_cnpj, formatar_valor
 from mangum import Mangum
+import time
 
 # Criando o aplicativo FastAPI
 app = FastAPI()
-
-
-def lambda_handler(event, context):
-    return {
-        'statusCode': 200,
-        'headers': {
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Origin': 'https://main.d1oye14rstulb5.amplifyapp.com/',
-            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-        },
-        'body': json.dumps({'message': 'Hello from Lambda!'})
-    }
-
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -76,6 +64,8 @@ async def receber_cnpjs(request: Request):
         dados = buscar_dados_cnpj(cnpj)
         if dados:
             todos_dados.append(dados)
+
+        time.sleep(5)
 
     if todos_dados:
         df_dados_gerais = pd.json_normalize(todos_dados)
@@ -149,3 +139,36 @@ async def receber_cnpjs(request: Request):
 
 # Handler para AWS Lambda
 handler = Mangum(app)  # Esta linha é importante para integração com Lambda
+
+# **Correção do `lambda_handler` para repassar requisições ao FastAPI**
+
+
+def lambda_handler(event, context):
+    """
+    Este handler recebe eventos do API Gateway e os encaminha para o Mangum,
+    garantindo que o CORS seja tratado corretamente.
+    """
+    # Manipula requisições OPTIONS para CORS
+    if event.get("httpMethod") == "OPTIONS":
+        return {
+            "statusCode": 200,
+            'headers': {
+                'Access-Control-Allow-Headers': 'Content-Type',
+                # Permitir o domínio específico
+                'Access-Control-Allow-Origin': 'https://main.d1oye14rstulb5.amplifyapp.com',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
+            'body': json.dumps({'message': 'Hello from Lambda!'})
+        }
+
+    # Chama o handler do FastAPI via Mangum
+    response = handler(event, context)
+
+    # Adicionando cabeçalhos CORS à resposta do POST
+    response['headers'] = response.get('headers', {})
+    # Permitir o domínio específico
+    response['headers']['Access-Control-Allow-Origin'] = 'https://main.d1oye14rstulb5.amplifyapp.com'
+    response['headers']['Access-Control-Allow-Methods'] = 'OPTIONS,POST,GET'
+    response['headers']['Access-Control-Allow-Headers'] = 'Content-Type'
+
+    return response

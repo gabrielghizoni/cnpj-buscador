@@ -1,28 +1,60 @@
 
 body {
-    background-color: rgb(217, 217, 217);
+    background-color: rgb(255, 255, 255);
 }
 
+.form-control {
+    background-color: #ffffff;
+    color: #030303 !important;
+    /* Altere para a cor que preferir */
+}
+
+.form-control:focus {
+    background-color: #ffffff;
+    color: #030303 !important;
+    /* Mantém a mesma cor ao focar */
+    border-color: #6c757d;
+    /* Cor da borda quando em foco (opcional) */
+    box-shadow: none;
+    /* Remove o sombreado padrão do Bootstrap ao focar */
+}
+
+
+/* defasado pelo bootstrap */
 .cnpjs {
-    /* Regras de estilo */
-    border: 2px solid #ffffff;
-    padding: 10px;
-    width: 20%;
-    height: 200px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-}
-
-button {
-    background-color: #6a6a6a;
     margin-left: 40px;
     /* Cor de fundo */
     color: white;
     /* Cor do texto */
     padding: 10px 20px;
     /* Espaçamento interno */
-    border: none;
+    border: 2px solid #030303;
+    /* Sem borda */
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    font-size: 16px;
+    /* Tamanho da fonte */
+    cursor: pointer;
+    /* Cursor de mão ao passar o mouse */
+    font-weight: bold;
+    width: 100%;
+    /* Largura ajustada automaticamente ao conteúdo */
+    display: block;
+    /* Faz o botão se comportar como bloco (para centralização) */
+    margin-bottom: 0px;
+    height: 100px;
+
+}
+
+.btn-custom {
+    border: 1px solid #000000 !important;
+    background: linear-gradient(to right, #C5ADC5, #B2B5E0);
+    /* Cor de fundo */
+    color: rgb(0, 0, 0);
+    /* Cor do texto */
+    padding: 10px 20px;
+    /* Espaçamento interno */
+    border: 2px solid black !important;
     /* Sem borda */
     border-radius: 10px;
     /* Bordas arredondadas */
@@ -33,19 +65,21 @@ button {
     font-weight: bold;
     width: auto;
         /* Largura ajustada automaticamente ao conteúdo */
-    display: block;
-        /* Faz o botão se comportar como bloco (para centralização) */
+    margin: 0px auto;
+    /* Centraliza horizontalmente */
 
 }
 
-button:hover {
-    background-color: #81ff87;
+.btn-custom:hover {
+    background: linear-gradient(to right, #B2B5E0, #C5ADC5);
     /* Muda a cor ao passar o mouse */
     color: black;
+    border: 2px solid #000000 !important;
+
 }
 
 h2 {
-    color: #464646;
+    color: #000000;
     margin-left: 5px;
 }
 
@@ -101,4 +135,94 @@ p {
     float: right;
     cursor: pointer;
     font-size: 20px;
+}
+
+.funcionamento-container-custom {
+    background: linear-gradient(to right, #C5ADC5, #B2B5E0);
+    color: #000000;
+    position: relative;
+    height: 250px;
+    /* Fixa a posição em relação à janela do navegador */
+    top: 20px;
+    /* Coloca o conteúdo no topo */
+    left: 200px;
+    /* Coloca o conteúdo à direita */
+    padding: 20px;
+    z-index: 1000;
+    /* Garante que o conteúdo esteja acima de outros elementos */
+    width: 1000px;
+    /* Define a largura do bloco, ajuste conforme necessário */
+    display: block;
+}
+
+.funcionamento {
+    font-size: 20px;
+    /* Tamanho do título */
+    margin-bottom: 10px;
+    /* Espaçamento abaixo do título */
+}
+
+.funcionamento-container p {
+    color: #000000;
+    font-size: 16px;
+    /* Tamanho do texto */
+    margin-bottom: 10px;
+    /* Espaçamento entre parágrafo e lista */
+    text-align: justify;    
+}
+
+.funcionamento-container ul {
+    color: #000000;
+    list-style-type: none;
+    /* Remove os marcadores da lista */
+    padding-left: 0;
+    /* Remove o preenchimento da lista */
+    list-style-type: disc;
+    padding-left: 20px
+}
+
+.funcionamento-container li {
+    color: #000000;
+    font-size: 16px;
+    /* Tamanho dos itens da lista */
+    padding-left: 10px;
+}
+
+.loading-spinner {
+    border: 4px solid #f3f3f3;
+    /* Cor do fundo */
+    border-top: 4px solid #3498db;
+    /* Cor do spinner */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    margin-top: 10px;
+}
+
+#loading {
+    position: fixed;
+    /* Para garantir que fique na tela toda */
+    top: 50%;
+    /* Centraliza verticalmente */
+    left: 50%;
+    /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%);
+    /* Ajusta o posicionamento para o centro exato */
+    z-index: 9999;
+    /* Garante que o spinner fique acima de outros elementos */
+    font-size: 20px;
+    /* Ajuste a fonte para o tamanho desejado */
+    color: #000000;
+    /* Cor do texto (caso precise de branco ou outra cor) */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
