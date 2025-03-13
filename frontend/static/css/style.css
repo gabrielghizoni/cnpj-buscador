@@ -1,4 +1,3 @@
-
 body {
     background-color: rgb(255, 255, 255);
 }
@@ -6,76 +5,35 @@ body {
 .form-control {
     background-color: #ffffff;
     color: #030303 !important;
-    /* Altere para a cor que preferir */
-}
-
-.form-control:focus {
-    background-color: #ffffff;
-    color: #030303 !important;
-    /* Mantém a mesma cor ao focar */
-    border-color: #6c757d;
-    /* Cor da borda quando em foco (opcional) */
-    box-shadow: none;
-    /* Remove o sombreado padrão do Bootstrap ao focar */
-}
-
-
-/* defasado pelo bootstrap */
-.cnpjs {
-    margin-left: 40px;
-    /* Cor de fundo */
-    color: white;
-    /* Cor do texto */
     padding: 10px 20px;
-    /* Espaçamento interno */
     border: 2px solid #030303;
-    /* Sem borda */
     border-radius: 10px;
-    /* Bordas arredondadas */
     font-size: 16px;
-    /* Tamanho da fonte */
     cursor: pointer;
-    /* Cursor de mão ao passar o mouse */
     font-weight: bold;
     width: 100%;
-    /* Largura ajustada automaticamente ao conteúdo */
     display: block;
-    /* Faz o botão se comportar como bloco (para centralização) */
     margin-bottom: 0px;
-    height: 100px;
-
 }
 
 .btn-custom {
-    border: 1px solid #000000 !important;
+    border: 2px solid #000000 !important;
     background: linear-gradient(to right, #C5ADC5, #B2B5E0);
-    /* Cor de fundo */
     color: rgb(0, 0, 0);
-    /* Cor do texto */
     padding: 10px 20px;
-    /* Espaçamento interno */
-    border: 2px solid black !important;
-    /* Sem borda */
     border-radius: 10px;
-    /* Bordas arredondadas */
     font-size: 16px;
-    /* Tamanho da fonte */
     cursor: pointer;
-    /* Cursor de mão ao passar o mouse */
     font-weight: bold;
-    width: auto;
-        /* Largura ajustada automaticamente ao conteúdo */
-    margin: 0px auto;
-    /* Centraliza horizontalmente */
-
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
 }
 
 .btn-custom:hover {
     background: linear-gradient(to right, #B2B5E0, #C5ADC5);
-    /* Muda a cor ao passar o mouse */
     color: black;
     border: 2px solid #000000 !important;
-
 }
 
 h2 {
@@ -93,7 +51,8 @@ p {
     background-color: #ffffff;
     border: none;
     padding: 10px;
-    width: 20%;
+    width: 100%;
+    max-width: 600px;
     height: 100px;
     font-size: 16px;
     margin-bottom: 10px;
@@ -102,13 +61,9 @@ p {
     color: #030303;
     white-space: pre-line;
     word-wrap: break-word;
-    /* Garante que palavras longas quebrem */
-    white-space: pre-line;
-    /* Mantém as quebras de linha */
     overflow-wrap: break-word;
-    /* Evita que o texto ultrapasse os limites */
     overflow-y: auto;
-    /* Adiciona barra de rolagem vertical se necessário */
+    margin: 0 auto;
 }
 
 .modal {
@@ -141,42 +96,31 @@ p {
     background: linear-gradient(to right, #C5ADC5, #B2B5E0);
     color: #000000;
     position: relative;
-    height: 250px;
-    /* Fixa a posição em relação à janela do navegador */
-    top: 20px;
-    /* Coloca o conteúdo no topo */
-    left: 200px;
-    /* Coloca o conteúdo à direita */
+    height: auto;
     padding: 20px;
+    margin-top: 20px;
     z-index: 1000;
-    /* Garante que o conteúdo esteja acima de outros elementos */
-    width: 1000px;
-    /* Define a largura do bloco, ajuste conforme necessário */
     display: block;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .funcionamento {
     font-size: 20px;
-    /* Tamanho do título */
     margin-bottom: 10px;
-    /* Espaçamento abaixo do título */
 }
 
 .funcionamento-container p {
     color: #000000;
     font-size: 16px;
-    /* Tamanho do texto */
     margin-bottom: 10px;
-    /* Espaçamento entre parágrafo e lista */
-    text-align: justify;    
+    text-align: justify;
 }
 
 .funcionamento-container ul {
     color: #000000;
     list-style-type: none;
-    /* Remove os marcadores da lista */
     padding-left: 0;
-    /* Remove o preenchimento da lista */
     list-style-type: disc;
     padding-left: 20px
 }
@@ -184,37 +128,40 @@ p {
 .funcionamento-container li {
     color: #000000;
     font-size: 16px;
-    /* Tamanho dos itens da lista */
     padding-left: 10px;
 }
 
 .loading-spinner {
     border: 4px solid #f3f3f3;
-    /* Cor do fundo */
     border-top: 4px solid #3498db;
-    /* Cor do spinner */
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     animation: spin 2s linear infinite;
-    margin-top: 10px;
+
+    /* Centraliza o carregamento na tela */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    /* Para garantir que fique acima de outros elementos */
 }
 
 #loading {
     position: fixed;
-    /* Para garantir que fique na tela toda */
-    top: 50%;
-    /* Centraliza verticalmente */
-    left: 50%;
-    /* Centraliza horizontalmente */
-    transform: translate(-50%, -50%);
-    /* Ajusta o posicionamento para o centro exato */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    /* Fundo semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 9999;
-    /* Garante que o spinner fique acima de outros elementos */
-    font-size: 20px;
-    /* Ajuste a fonte para o tamanho desejado */
-    color: #000000;
-    /* Cor do texto (caso precise de branco ou outra cor) */
+    /* Para garantir que o loading apareça no topo */
+    visibility: hidden;
 }
 
 @keyframes spin {
@@ -224,5 +171,11 @@ p {
 
     100% {
         transform: rotate(360deg);
+    }
+}
+
+@media (min-width: 576px) {
+    .btn-custom {
+        width: auto;
     }
 }
