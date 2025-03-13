@@ -186,7 +186,6 @@ p {
 }
 
 #download-container {
-    border: 2px solid #030303 !important;
     margin-top: 20px;
     text-align: center;
     /* Centraliza o conteúdo */
@@ -195,4 +194,9 @@ p {
 #download-link {
     text-decoration: none;
     /* Remover a decoração do link */
+}
+
+.btn-success {
+    border: 2px solid #030303 !important;
+
 }
