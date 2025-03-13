@@ -45,8 +45,7 @@
             fetch('https://fpsi52x1f1.execute-api.us-east-2.amazonaws.com/prod/receber-cnpjs', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'https://main.d1oye14rstulb5.amplifyapp.com/'
+                    'Content-Type': 'application/json'                    
                 },
                 body: JSON.stringify({ cnpjs: cnpjLista })
             })
