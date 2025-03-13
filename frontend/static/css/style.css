@@ -163,7 +163,6 @@ p {
     align-items: center;
     z-index: 9999;
     /* Para garantir que o loading apareça no topo */
-    visibility: hidden;
 }
 
 @keyframes spin {
