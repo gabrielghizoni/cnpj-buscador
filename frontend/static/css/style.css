@@ -135,34 +135,38 @@ p {
 
 .loading-spinner {
     border: 4px solid #f3f3f3;
+    /* Cor de fundo do spinner */
     border-top: 4px solid #3498db;
+    /* Cor da borda superior (para o efeito de rotação) */
     border-radius: 50%;
+    /* Faz o círculo */
     width: 50px;
+    /* Largura do spinner */
     height: 50px;
+    /* Altura do spinner */
     animation: spin 2s linear infinite;
+    /* Animação de rotação */
 
-    /* Centraliza o carregamento na tela */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    /* Para garantir que fique acima de outros elementos */
+    /* Não precisa de centralização aqui, pois o #loading já faz isso */
 }
 
 #loading {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    /* Fixar na tela */
+    top: 50%;
+    /* Centralizar verticalmente */
+    left: 50%;
+    /* Centralizar horizontalmente */
+    transform: translate(-50%, -50%);
+    /* Ajustar para que o centro fique no meio da tela */
     background-color: rgba(255, 255, 255, 0.5);
     /* Fundo semi-transparente */
-    display: flex;
+    display: none;
+    /* Inicialmente escondido */
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    /* Para garantir que o loading apareça no topo */
+    /* Para garantir que o loading fique sobre outros elementos */
 }
 
 @keyframes spin {
@@ -182,6 +186,7 @@ p {
 }
 
 #download-container {
+    border: 2px solid #030303 !important;
     margin-top: 20px;
     text-align: center;
     /* Centraliza o conteúdo */

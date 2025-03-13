@@ -115,6 +115,7 @@
                     // Atualiza o link de download
                     document.getElementById("download-link").href = downloadUrl;
                     document.getElementById("download-container").style.display = 'block';
+                    document.getElementById('loading').style.display = 'none';
                 })
                 .catch(error => {
                     console.error('Erro:', error);
