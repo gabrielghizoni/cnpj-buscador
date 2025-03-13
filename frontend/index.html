@@ -85,7 +85,7 @@
                 alert('Por favor, insira pelo menos um CNPJ!');
                 return;
             }
-            document.getElementById('loading').style.display = 'block';
+            document.getElementById('loading').style.display = 'flex';
             var cnpjLista = cnpjs.split('\n');
 
             fetch('https://fpsi52x1f1.execute-api.us-east-2.amazonaws.com/prod/receber-cnpjs', {

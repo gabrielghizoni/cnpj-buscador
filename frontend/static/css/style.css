@@ -28,6 +28,8 @@ body {
     width: 100%;
     max-width: 300px;
     margin: 10px auto;
+    transition: background 0.3s ease, border 0.3s ease;
+    /* Transição suave */
 }
 
 .btn-custom:hover {
@@ -122,7 +124,7 @@ p {
     list-style-type: none;
     padding-left: 0;
     list-style-type: disc;
-    padding-left: 20px
+    padding-left: 20px;
 }
 
 .funcionamento-container li {
@@ -178,4 +180,15 @@ p {
     .btn-custom {
         width: auto;
     }
+}
+
+#download-container {
+    margin-top: 20px;
+    text-align: center;
+    /* Centraliza o conteúdo */
+}
+
+#download-link {
+    text-decoration: none;
+    /* Remover a decoração do link */
 }
