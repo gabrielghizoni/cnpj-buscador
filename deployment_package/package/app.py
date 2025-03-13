@@ -6,11 +6,25 @@ import uuid
 import logging
 import json
 import boto3
+import base64
 from cnpj_pegador import buscar_dados_cnpj, formatar_valor
 from mangum import Mangum
 
 # Criando o aplicativo FastAPI
 app = FastAPI()
+
+
+def lambda_handler(event, context):
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': 'https://main.d1oye14rstulb5.amplifyapp.com/',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        },
+        'body': json.dumps({'message': 'Hello from Lambda!'})
+    }
+
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
