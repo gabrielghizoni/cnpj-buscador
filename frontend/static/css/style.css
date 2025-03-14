@@ -176,6 +176,8 @@ p {
     /* Ajuste o tamanho da imagem conforme necessário */
     height: 50px;
     /* Ajuste o tamanho da imagem conforme necessário */
+    animation: spin 2s linear infinite;
+    border-radius: 50%;
 }
 
 @keyframes spin {
