@@ -169,6 +169,10 @@ p {
     align-items: center;
     z-index: 9999;
     /* Para garantir que o loading fique sobre outros elementos */
+    border-radius: 50%;
+    /* Deixa o fundo arredondado, se você preferir um fundo redondo */
+    padding: 10px;
+    /* Ajuste o padding se necessário para manter o círculo ao redor da imagem */
 }
 
 #loading img {
