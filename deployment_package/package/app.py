@@ -9,6 +9,7 @@ import boto3
 import base64
 from cnpj_pegador import buscar_dados_cnpj, formatar_valor
 from mangum import Mangum
+import time
 
 # Criando o aplicativo FastAPI
 app = FastAPI()
@@ -64,6 +65,8 @@ async def receber_cnpjs(request: Request):
         if dados:
             todos_dados.append(dados)
 
+        time.sleep(2)
+
     if todos_dados:
         df_dados_gerais = pd.json_normalize(todos_dados)
         for coluna in df_dados_gerais.select_dtypes(include=['object']).columns:
@@ -74,25 +77,24 @@ async def receber_cnpjs(request: Request):
 
     lista_socios = []
     for dado in todos_dados:
-        cnpj_origem = dado.get('cnpj_raiz', '')
-        razao_origem = dado.get('razao_social', '')
-        socios = dado.get('socios', [])
+        cnpj_origem = dado.get('cnpj', '')  # de cnpj_raiz para cnpj
+        razao_origem = dado.get('razao_social', '')  # certo
+        qsa = dado.get('qsa', [])  # de socios para qsa
 
-        if isinstance(socios, list):
-            for socio in socios:
+        if isinstance(qsa, list):
+            for socio in qsa:
                 socio_formatado = {
                     'CNPJ': cnpj_origem,
                     'razao_social': razao_origem,
-                    'CPF/CNPJ Sócio': formatar_valor(socio.get('cpf_cnpj_socio')),
-                    'Nome': formatar_valor(socio.get('nome')),
-                    'Tipo': formatar_valor(socio.get('tipo')),
-                    'Data Entrada': formatar_valor(socio.get('data_entrada')),
+                    'CPF/CNPJ Sócio': formatar_valor(socio.get('cnpj_cpf_do_socio')),
+                    'Nome': formatar_valor(socio.get('nome_socio')),
+                    'Data Entrada': formatar_valor(socio.get('data_entrada_sociedade')),
+                    'Qualificação Sócio': formatar_valor(socio.get('qualificacao_socio')),
                     'CPF Representante': formatar_valor(socio.get('cpf_representante_legal')),
-                    'Nome Representante': formatar_valor(socio.get('nome_representante')),
+                    'Nome Representante': formatar_valor(socio.get('nome_representante_legal')),
                     'Faixa Etária': formatar_valor(socio.get('faixa_etaria')),
-                    'Atualizado em': formatar_valor(socio.get('atualizado_em')),
-                    'País': formatar_valor(socio.get('pais', {}).get('nome')),
-                    'Qualificação Sócio': formatar_valor(socio.get('qualificacao_socio', {}).get('descricao'))
+                    'Qualificacao do Representante': formatar_valor(socio.get('qualificacao_representante_legal')),
+                    'País': formatar_valor(socio.get('pais'))
                 }
                 lista_socios.append(socio_formatado)
 

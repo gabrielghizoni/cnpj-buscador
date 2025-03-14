@@ -5,7 +5,7 @@ import time
 
 
 def buscar_dados_cnpj(cnpj, max_retries=5, delay=2):
-    url = f"https://publica.cnpj.ws/cnpj/{cnpj}"
+    url = f"https://brasilapi.com.br/api/cnpj/v1/{cnpj}"
     headers = {"User-Agent": "Mozilla/5.0"}
 
     for attempt in range(max_retries):

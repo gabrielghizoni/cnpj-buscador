@@ -4,8 +4,8 @@ import time
 # Função para buscar dados do CNPJ na API com retentativas
 
 
-def buscar_dados_cnpj(cnpj, max_retries=3, delay=3):
-    url = f"https://publica.cnpj.ws/cnpj/{cnpj}"
+def buscar_dados_cnpj(cnpj, max_retries=5, delay=2):
+    url = f"https://brasilapi.com.br/api/cnpj/v1/{cnpj}"
     headers = {"User-Agent": "Mozilla/5.0"}
 
     for attempt in range(max_retries):
